@@ -11,8 +11,8 @@ const port = process.env.PORT || 3000;
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// Serve static files from the root directory
-app.use(express.static(path.join(__dirname, '..')));
+// Serve static files from the frontend directory
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // MySQL Connection Pool
 const pool = mysql.createPool({
@@ -24,9 +24,9 @@ const pool = mysql.createPool({
 });
 
 // Route to serve HTML files and inject partials
-app.get('/:page', (req, res) => {
-    const page = req.params.page;
-    if (page === 'index.html' || page === 'about.html' || page === 'courses.html' || page === 'testimonials.html' || page === 'contact.html') {
+app.get('/:page.html', (req, res) => {
+    const page = req.params.page + '.html';
+    if (['index', 'about', 'courses', 'testimonials', 'contact'].includes(req.params.page)) {
         let filePath = path.join(__dirname, '..', 'frontend', page);
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
@@ -44,7 +44,7 @@ app.get('/:page', (req, res) => {
             });
         });
     } else {
-        res.sendFile(path.join(__dirname, '..', 'frontend', req.params.page));
+        res.sendFile(path.join(__dirname, '..', 'frontend', req.params.page + '.html'));
     }
 });
 
