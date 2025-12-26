@@ -1093,10 +1093,28 @@ body {
 }
 
 @media (max-width: 768px) {
-    .nav-links,
+        .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        box-shadow: var(--shadow-md);
+        padding: 1rem 2rem;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
     .nav-actions {
         display: none;
     }
+
     
     .mobile-menu-btn {
         display: flex;
