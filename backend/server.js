@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,15 +27,15 @@ const pool = mysql.createPool({
 app.get('/:page', (req, res) => {
     const page = req.params.page;
     if (page === 'index.html' || page === 'about.html' || page === 'courses.html' || page === 'testimonials.html' || page === 'contact.html') {
-        let filePath = path.join(__dirname, '..\', page);
+        let filePath = path.join(__dirname, '..', 'frontend', page);
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
                 return res.status(404).send('Page not found');
             }
             // Inject navbar and footer
-            fs.readFile(path.join(__dirname, '..\', 'navbar.html'), 'utf8', (err, navbarData) => {
+            fs.readFile(path.join(__dirname, '..', 'frontend', 'navbar.html'), 'utf8', (err, navbarData) => {
                 if (err) return res.status(500).send('Error loading navbar');
-                fs.readFile(path.join(__dirname, '..\', 'footer.html'), 'utf8', (err, footerData) => {
+                fs.readFile(path.join(__dirname, '..', 'frontend', 'footer.html'), 'utf8', (err, footerData) => {
                     if (err) return res.status(500).send('Error loading footer');
                     let content = data.replace('<div data-include="navbar.html"></div>', navbarData);
                     content = content.replace('<div data-include="footer.html"></div>', footerData);
@@ -43,7 +44,7 @@ app.get('/:page', (req, res) => {
             });
         });
     } else {
-        res.sendFile(path.join(__dirname, '..\', req.params.page));
+        res.sendFile(path.join(__dirname, '..', 'frontend', req.params.page));
     }
 });
 
