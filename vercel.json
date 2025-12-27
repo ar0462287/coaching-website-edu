@@ -1,5 +1,4 @@
 {
-  "public": true,
-  "buildCommand": "echo skipping build",
-  "outputDirectory": "frontend"
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist"
 }
